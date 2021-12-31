@@ -1,4 +1,5 @@
 using Mafia.Data;
+using Mafia.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,6 +22,8 @@ namespace Mafia
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddData(Configuration);
 
             services.AddControllersWithViews();
@@ -59,6 +62,8 @@ namespace Mafia
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHub<MafiaHub>("mafia");
             });
 
             app.UseSpa(spa =>
