@@ -14,7 +14,7 @@ export class SignalrService {
 
     startConnection() {
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:5001/mafia')
+            .withUrl('https://localhost:44355/mafia')
             .build();
 
         this.hubConnection
@@ -25,21 +25,17 @@ export class SignalrService {
             .catch(err => console.log('Error while starting connection: ' + err))
     }
 
-    askServer() {
-        this.hubConnection.invoke("AskServer", "hey")
-            .catch(err => console.error(err))
-
-    }
-
     askServerListener() {
         this.hubConnection.on("AskServerResponse", (someText) => {
             console.log(someText)
         });
     }
 
+    askServer() {
+        this.hubConnection.invoke("AskServer", "hey")
+            .catch(err => console.error(err))
 
-
-
+    }
 
 
 }
