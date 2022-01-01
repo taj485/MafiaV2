@@ -7,17 +7,20 @@ import { SignalrService } from './signalr.service';
 })
 export class AppComponent {
   title = 'app';
+  connection;
 
   constructor(public signalrService: SignalrService)
   {
   }
 
   ngOnInit() {
-    this.signalrService.startConnection();
-
-    setTimeout(() => {
+    this.connection = this.signalrService.startConnection().subscribe(x => {
       this.signalrService.askServerListener();
       this.signalrService.askServer();
-    }, 2000)
+    });
+  }
+
+  ngOnDestroy(){
+    this.connection.unsubscribe();
   }
 }
